@@ -11,8 +11,8 @@
 | **Members** | N. Swetha, G. Anuhya, V. Madhulika, A. Likhith Sai, A. Yamini, N. Sushma |
 | **Selected track and PS code** | Quantum Machine Learning – **PS-Q2** (Quantum Kernel Estimator & SVM) |
 | **Dataset** | `sklearn.datasets.make_moons(n_samples=100, noise=0.1, random_state=42)` → `data/raw/moons_raw.csv` |
-| **Repository** | [github.com/swethanissankara-boop/Qiskit-Fall-Fest-2026](https://github.com/swethanissankara-boop/Qiskit-Fall-Fest-2026) |
-| **Scope** | Phase 1 only: Processor A and Processor B (no Processor C / D) |
+| **Repository** |https://github.com/swethanissankara-boop/Qiskit-Fall-2026|
+| **Scope** | Phase 1 only: Processor A and Processor B  |
 
 ---
 
@@ -40,8 +40,8 @@
 
 ## 1. Highlights
 - **One Problem Statement, one solution, two architectures.** The same logical circuit, data split, SVM regularisation `C`, shot count (4096), simulator seed and transpiler settings (optimisation level 1, seed 42) are used on both processors; **only the coupling graph changes**.
-- **Coupling maps are a search result, not a copy.**
-  - Processor A: *exhaustive* search over all 6 connected 5-node graphs (≤ 5 edges, max degree 3).
+- **Coupling maps**
+  - Processor A: *Exhaustive* search over all 6 connected 5-node graphs (≤ 5 edges, max degree 3).
   - Processor B: 250 random graphs + 3 hill-climbing restarts over 12-edge, max-degree-3 graphs (255 evaluated).
   - A *held-out workload* (`star` entangler, never used in the search) checks that the designs do not over-fit.
   - During the search we found that the guide's reference 9-qubit graph needs a **degree-5 hub**, which is unrealistic for fixed-frequency hardware, so our Processor B enforces **max degree 3**.
@@ -62,7 +62,7 @@
 |---|---|
 | PS code / name | **PS-Q2** – Quantum Kernel Estimator & Support Vector Machine (QSVM) |
 | Track | Track 4 – Quantum Machine Learning |
-| Task (from the Master Guide) | Construct a quantum kernel matrix using fidelity state overlap `|⟨φ(x)|φ(x′)⟩|²` on a **4-qubit register**. Train a classical SVM with the quantum kernel. **Compare kernel evaluation cost on A vs B.** |
+| Task | Construct a quantum kernel matrix using fidelity state overlap `|⟨φ(x)|φ(x′)⟩|²` on a **4-qubit register**. Train a classical SVM with the quantum kernel. **Compare kernel evaluation cost on A vs B.** |
 | Instance | `make_moons(n_samples=100, noise=0.1, random_state=42)`; stratified **80 train / 20 test** split (seed 42) |
 | Core algorithm | ZZ-style quantum feature map → fidelity kernel (compute–uncompute circuit) → `SVC(kernel="precomputed")` |
 | Primary metric | Test accuracy with 95 % Wilson interval; also repeated-CV accuracy |
