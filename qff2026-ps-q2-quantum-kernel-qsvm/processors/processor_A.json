@@ -1,0 +1,139 @@
+{
+  "name": "Processor A (custom 4-cycle + pendant)",
+  "role": "5-qubit baseline-budget processor",
+  "num_qubits": 5,
+  "coupling_map_undirected": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ]
+  ],
+  "coupling_map_directed_both_ways": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      3,
+      1
+    ],
+    [
+      4,
+      1
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      4,
+      2
+    ]
+  ],
+  "basis_gates": [
+    "rz",
+    "sx",
+    "x",
+    "cx"
+  ],
+  "transpile": {
+    "optimization_level": 1,
+    "seed_transpiler": 42,
+    "shots": 4096
+  },
+  "synthetic_noise_model": {
+    "p_1q_depolarizing": 0.001,
+    "p_2q_cx_depolarizing": 0.005,
+    "p_readout": 0.01,
+    "notes": "identical on Processor A and B; rz is virtual (noise-free); symmetric readout error on every qubit"
+  },
+  "topology_stats": {
+    "num_qubits": 5,
+    "num_edges": 5,
+    "density": 0.5,
+    "degree_sequence": [
+      3,
+      2,
+      2,
+      2,
+      1
+    ],
+    "max_degree": 3,
+    "diameter": 3,
+    "avg_shortest_path": 1.6,
+    "algebraic_connectivity": 0.8299,
+    "num_triangles": 0,
+    "num_4_cycles": 1
+  },
+  "design_rationale": "Exhaustive search over all 6 connected 5-node graphs (<=5 edges, max degree 3). The winner minimises mean routed CX over the workload family {linear, ring, full}: 38.7 CX vs 56.0 on the reference linear chain and 44.7 on the reference tree. Structure: a 4-cycle (qubits 1-3-2-4) plus a pendant qubit 0 attached to qubit 1; the 4-cycle hosts the ring-entangled 4-qubit feature map with zero SWAPs, and the pendant keeps max degree at 3 while giving the router a spare qubit.",
+  "design_search": {
+    "method": "exhaustive over networkx atlas",
+    "n_candidates": 6,
+    "score_mean_cx": 38.666666666666664,
+    "baseline_mean_cx": {
+      "reference_linear": 56.0
+    },
+    "workload_family": [
+      "linear",
+      "ring",
+      "full"
+    ],
+    "held_out_workload": "star"
+  },
+  "benchmark_cx_reps2": {
+    "A_ref_linear": {
+      "linear": 22,
+      "ring": 64,
+      "full": 82,
+      "star": 34
+    },
+    "A_ref_tree": {
+      "linear": 22,
+      "ring": 48,
+      "full": 64,
+      "star": 22
+    },
+    "A_custom": {
+      "linear": 22,
+      "ring": 30,
+      "full": 64,
+      "star": 22
+    }
+  }
+}

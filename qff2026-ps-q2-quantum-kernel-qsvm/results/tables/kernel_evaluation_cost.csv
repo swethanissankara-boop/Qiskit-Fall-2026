@@ -1,0 +1,7 @@
+workload,processor,layout_physical_qubits,circuits_per_gram,circuits_train_test_only,depth,cx_depth,cx,swaps,total_cx_executed_millions,est_gate_fidelity,sim_seconds
+main,A,"[2, 3, 1, 0]",4950,4760,24,10,10,0,202.75,0.9435,44.9
+main,B,"[7, 2, 0, 4]",4950,4760,24,10,10,0,202.75,0.9435,45.1
+stress,A,"[1, 4, 3, 0]",4950,4760,120,64,64,6,1297.61,0.714,61.7
+stress,B,"[3, 5, 6, 1]",4950,4760,96,48,56,4,1135.41,0.7433,62.6
+stress,A_ref_linear,"[1, 2, 0, 3]",4950,4760,120,68,82,12,1662.57,0.6524,64.0
+stress,B_ref_heavyhex,"[6, 2, 1, 5]",4950,4760,96,48,56,4,1135.41,0.7433,60.2

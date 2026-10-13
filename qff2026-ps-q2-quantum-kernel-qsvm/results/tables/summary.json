@@ -1,0 +1,111 @@
+{
+  "seed": 42,
+  "shots": 4096,
+  "noise": {
+    "p_1q_depolarizing": 0.001,
+    "p_2q_cx_depolarizing": 0.005,
+    "p_readout": 0.01
+  },
+  "processor_A_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      2,
+      4
+    ]
+  ],
+  "processor_B_edges": [
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      2,
+      7
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      5,
+      6
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "main_model": {
+    "entanglement": "linear",
+    "reps": 1,
+    "gamma": 1.0,
+    "C": 1.0,
+    "cv_mean": 0.9916666666666667,
+    "cv_std": 0.02124591463996994,
+    "logical_cx": 12
+  },
+  "stress_model": {
+    "entanglement": "full",
+    "reps": 2,
+    "gamma": 0.5,
+    "C": 1.0,
+    "cv_mean": 1.0,
+    "cv_std": 0.0,
+    "logical_cx": 48
+  },
+  "classical_rbf": {
+    "test_acc": 1.0,
+    "cv": 0.9916666666666667,
+    "params": {
+      "C": 10,
+      "gamma": 10
+    }
+  },
+  "versions": {
+    "qiskit": "2.5.2",
+    "qiskit_aer": "0.17.2"
+  }
+}
