@@ -165,7 +165,8 @@ Key equations (rendered in `assets/qff_phase1_latex_images/`):
 
 Why two workloads? The cheapest feature map (`linear`, 1 rep) embeds directly into the coupling graphs of **both** processors with zero SWAPs, so A and B tie exactly. That is an honest result, but it hides architectural differences. The STRESS workload uses the full K4 entangler: neither coupling graph contains a 4-clique, so routing is unavoidable and the architecture effect becomes measurable.
 
-### 4.4 Design choices (full rationale in `docs/ai/adrs.md`)
+### 4.4 Design choices 
+
 - **Parametrised, route-once circuits** – the kernel circuit is transpiled once per processor and parameters are bound per pair, so every kernel entry uses an identical compiled circuit (as on real hardware) and the transpiler cannot exploit per-pair angle coincidences.
 - **Kernel diagonal set to 1**, upper triangle simulated and mirrored (standard practice; the diagonal is analytically 1).
 - **`rz` is treated as a virtual (frame-change) gate** and carries no noise; `sx` and `x` carry the 1-qubit depolarising error. A pessimistic variant (`noisy_rz=True`) is available in `build_noise_model`.
@@ -361,11 +362,6 @@ Preparing a Bell pair on every edge of both processors gives population fidelity
 6. **Gate-set / noise confounders?** None by construction: same basis gates, same noise numbers, same seeds, same transpiler settings. The Bell-pair check verifies identical per-gate noise.
 7. **What remains uncertain?** (i) With 20 test points the accuracy CI is [0.84, 1.00] even at 100 %. (ii) Level-1 Sabre routing is a heuristic and its SWAP counts can change with the Qiskit version or seed. (iii) Results from one pair of finite graphs do not establish a universal advantage of either architecture. (iv) The noise is simulated, not measured on hardware.
 
-**Design recommendations that follow from the evidence**
-- *Match the entangler graph to the coupling graph.* A ring feature map on a 4-cycle costs 30 CX; on a chain it costs 64.
-- *Prefer the cheaper entangler when accuracy allows.* Choosing the `linear` map removed the processor dependence entirely at no accuracy cost.
-- *Extra qubits only help if they add useful local connectivity* (triangles, short cycles), not merely more nodes.
-- *Minimise routed CX first, then depth* – kernel error is approximately linear in routed CX at fixed noise.
 
 ---
 
@@ -485,7 +481,7 @@ Core constants live in `src/problem.py` (seed, samples, qubits, shots, split siz
 
 ---
 
-## 14. Assumptions and limitations (stated openly)
+## 14. Assumptions and limitations
 1. **Noise parameters** follow the Master Guide: 1-qubit depolarising 0.1 %, CX depolarising 0.5 %, readout error 1 % (symmetric), applied **identically** to A and B. If the official Challenge Kit specifies different values, change `NOISE_PARAMS` in `src/processors.py` and re-run (`RECOMPUTE = True`) – no other change is needed.
 2. **`rz` is noise-free** (virtual frame-change gate); `sx` and `x` carry the 1-qubit error. `build_noise_model(noisy_rz=True)` gives a pessimistic variant.
 3. **Kernel diagonal fixed to 1** (analytically exact); this makes the noise-induced contraction visible as diagonal dominance.
@@ -496,30 +492,9 @@ Core constants live in `src/problem.py` (seed, samples, qubits, shots, split siz
 8. **Processor B's gain over the reference heavy-hex graph is realism (max degree 3 instead of 5), not fewer CX** – the search plateaus at the same CX floor.
 9. **One pair of finite graphs** does not establish a universal advantage of either architecture.
 
----
 
-## 15. Mapping to the judging rubric
 
-| Criterion | Weight | Where it is addressed |
-|---|---|---|
-| **Scientific & algorithmic correctness** | 30 pts | Exact statevector kernel as reference; shot-only and noisy runs; classical RBF-SVM baseline; train-only model selection (no leakage); Wilson intervals (§4, §8.2) |
-| **Processor A vs B architectural analysis & creativity** | 35 pts | Search-designed coupling graphs with realism constraint and held-out workload (§5); depth / CX / SWAP / kernel-error comparison (§8); predictive noise-contraction law (§8.5); noise sweep (§8.7); candid interpretation (§9) |
-| **Reproducibility & code quality** | 20 pts | Pinned `requirements.txt`, seed 42, route-once parametrised design, cached Gram matrices, deterministic re-runs, modular `src/` (§11–13) |
-| **Documentation & visualisations** | 15 pts | This README, `report.md`, coupling-map diagrams, kernel heat-maps, topology/benchmark/noise-sweep plots, `docs/ai/` (§10) |
 
----
-
-## 16. Submission checklist
-- [x] Exactly **one** Problem Statement selected and documented (PS-Q2)
-- [x] Core solution implemented and verified against the exact classical/quantum reference
-- [x] Coupling maps for Processor A (5 q) and Processor B (9 q) creatively defined, justified and transpiled
-- [x] Quantitative comparison table generated (depth, CX count, SWAP overhead, accuracy on A vs B)
-- [x] Repository follows the required file structure (`main.ipynb`, `requirements.txt`, `processors/`, `results/`, `src/`, `assets/`, `report.md`, `docs/ai/`)
-- [x] Phase 1 scope respected: Processor A and B only (no C / D)
-- [ ] Public GitHub repository submitted at https://qffsrmap2026.com/learning/hackathon **before Wed, Oct 14, 2026, 23:59 IST**
-- [ ] Final check: executed `main.ipynb`, `results/`, `data/processed/` and `report.md` are committed and the repository is **public**
-
----
 
 ## 17. AI / LLM assistance disclosure
 An AI assistant (Claude, Anthropic) was used during development for code scaffolding, drafting of documentation and structuring of the analysis. The record of AI involvement – architecture decisions (`adrs.md`), issues and risks (`issues.md`), reusable patterns (`patterns.md`), how the plan changed (`plan-evolution.md`), an honest post-mortem (`postmortem.md`) and the prompts given (`prompts.md`) – is kept in `docs/ai/`. The team has reviewed, executed and takes responsibility for the submitted code, results and conclusions; all numerical results in this repository come from the executed notebook, not from the AI's text.
@@ -527,8 +502,9 @@ An AI assistant (Claude, Anthropic) was used during development for code scaffol
 ---
 
 ## References
-- Qiskit Fall Fest 2026 – Phase 1 Master Guide (Hackathon & Competitions Cell, SRM University-AP)
-- Havlíček et al., *Supervised learning with quantum-enhanced feature spaces*, Nature 567, 209 (2019)
-- Qiskit and Qiskit Aer documentation – transpilation, `NoiseModel`, `AerSimulator`, `Statevector`
-- scikit-learn documentation – `make_moons`, `SVC(kernel="precomputed")`
-- NetworkX documentation – graph atlas, graph metrics
+- Havlíček, V. et al. Supervised learning with quantum-enhanced feature spaces. Nature 567, 209–212 (2019). arXiv:1804.11326. This is the original paper for the ZZ-style feature map and quantum kernel SVM.
+
+- Schuld, M. & Killoran, N. Quantum machine learning in feature Hilbert spaces. Phys. Rev. Lett. 122, 040504 (2019). arXiv:1803.07128. It explains why a quantum circuit can be treated as a kernel.
+- Schuld, M. Supervised quantum machine learning models are kernel methods. arXiv:2101.11020 (2021).
+- Suzuki, Y. et al. Analysis and synthesis of feature map for kernel-based quantum classifier. Quantum Mach. Intell. 2, 9 (2020). arXiv:1906.10467. It covers feature-map design.
+- Hubregtsen, T. et al. Training quantum embedding kernels on near-term quantum computers. Phys. Rev. A 106, 042431 (2022). arXiv:2105.02276. It covers kernel-target alignment and kernel training.
