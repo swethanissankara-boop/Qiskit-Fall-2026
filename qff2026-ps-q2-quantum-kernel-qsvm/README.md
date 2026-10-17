@@ -15,6 +15,24 @@
 | **Scope** | Phase 1 only: Processor A and Processor B  |
 
 ---
+## 👥 Team & Contributions
+| Member | Area | Contribution |
+|---|---|---|
+| N. Swetha | Quantum kernel | Designed the 4-qubit ZZ-style feature map and the compute–uncompute fidelity kernel circuit (`src/problem.py`); validated it against the exact statevector kernel. |
+| G. Anuhya | Processor design | Built the Processor A and B coupling-map search (exhaustive for A, random search + hill-climbing for B), the degree-3 constraint, and the held-out workload check (`src/processors.py`, `processors/*.json`). |
+| V. Madhulika | Transpilation & routing | Implemented the route-once transpilation, SWAP counting, and the depth / CX / overhead comparison across the provided and custom topologies (`src/routing.py`, `src/metrics.py`). |
+| A. Likhith Sai | Noise & simulation | Built the synthetic noise model, ran the noisy Aer kernel simulations, the noise-scaling sweep and the Bell-pair sanity check. |
+| A. Yamini | ML & evaluation | Trained the SVM on the precomputed kernels, ran cross-validated model selection, the classical RBF baseline, and kernel-quality metrics (alignment, error, concentration). |
+| N. Sushma | Docs & presentation | Wrote the README, report and `docs/ai/` records, produced the figures (`src/visualization.py`).
+
+*All members reviewed the code, ran the notebook, and contributed to the analysis and conclusions.*
+
+## 🧠 Why QSVM (choice of algorithm)
+PS-Q2 asks for a quantum kernel classifier, so we use a QSVM: a quantum circuit estimates the
+similarity |⟨φ(x)|φ(x')⟩|² between data points, and a classical SVM classifies using that kernel.
+Unlike VQE or QAOA it has no variational training loop, so every difference between processors
+comes from the circuit and its routing, not from optimizer behaviour.
+
 
 ## Table of contents
 1. [Highlights](#1-highlights)
@@ -500,6 +518,41 @@ Core constants live in `src/problem.py` (seed, samples, qubits, shots, split siz
 An AI assistant (Claude, Anthropic) was used during development for code scaffolding, drafting of documentation and structuring of the analysis. The record of AI involvement – architecture decisions (`adrs.md`), issues and risks (`issues.md`), reusable patterns (`patterns.md`), how the plan changed (`plan-evolution.md`), an honest post-mortem (`postmortem.md`) and the prompts given (`prompts.md`) – is kept in `docs/ai/`. The team has reviewed, executed and takes responsibility for the submitted code, results and conclusions; all numerical results in this repository come from the executed notebook, not from the AI's text.
 
 ---
+## 🧩 The Problem We Faced & Proposed Processor D
+
+
+### The problem
+Our most demanding kernel circuit uses a feature map where every pair of the 4 kernel qubits interacts (6 pairs). This needs a fully connected group of 4 qubits (a K4 clique). Neither Processor A nor Processor B has one, so the transpiler must insert SWAP gates to move qubits next to each other. Each SWAP costs 3 CX gates, which adds depth and noise.
+
+Measured on this circuit (basis `rz, sx, x, cx`, optimization level 1, seed 42):
+
+| Processor | CX | Depth | SWAPs |
+|---|---|---|---|
+| A reference chain | 82 | 120 | 12 |
+| A reference tree | 64 | 120 | 6 |
+| Our Processor A | 64 | 120 | 6 |
+| Our Processor B | 56 | 96 | 4 |
+| Ideal all-to-all device (reference) | 46 | 68 | 0 |
+
+The gap to the all-to-all row is the price of limited connectivity: up to 36 extra CX and 52 extra depth.
+
+### Proposed Processor D
+- **Qubits:** 6
+- **Coupling map:** `(0,1),(0,2),(0,3),(1,2),(1,3),(2,3),(3,4),(2,5)`
+- **Idea:** qubits 0–3 form a K4 core, where every pair is directly coupled. Qubits 4 and 5 are spare qubits attached to the core for extra routing flexibility.
+
+### Result on the same circuit
+**46 CX, depth 68, 0 SWAPs.** This equals the ideal all-to-all device, so connectivity adds no overhead for this kernel.
+
+### Trade-offs
+- Qubits 2 and 3 each have 4 neighbours. Higher degree raises crosstalk and frequency-collision risk on real hardware.
+- A K4 cell is harder to lay out on a chip than the sparse graphs in A and B.
+- Only 6 qubits, so it does not scale up the way a 9-qubit chip does.
+- This is a simulation result. We have not shown it on real hardware.
+
+### What we learned
+Matching the processor's coupling graph to the algorithm's interaction graph matters more than raw qubit count. Only 4 physical qubits are active in every run, yet routing overhead changes the CX count from 46 to 82.
+
 
 ## References
 - Havlíček, V. et al. Supervised learning with quantum-enhanced feature spaces. Nature 567, 209–212 (2019). arXiv:1804.11326. This is the original paper for the ZZ-style feature map and quantum kernel SVM.
