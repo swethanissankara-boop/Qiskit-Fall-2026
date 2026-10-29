@@ -19,6 +19,7 @@ All submission requirements outlined in `QFF2026_QML_Participant_Problem_Stateme
 | `predictions_q2.csv` | Official test predictions for `hd_data_test_features.csv` (200 rows, format `sample_id,label`) | Validated by `tools/validate_predictions.py` |
 | `results.md` | Comprehensive technical report based on `results_template.md` | Completed with exact metrics & analysis |
 | `README.md` | Reproduction instructions, environment setup, and `pip freeze` record | This document |
+| `interactive_dashboard/` | Interactive browser app: phase scaling, hardware noise, topology, live inference | Interactive Visualizer |
 
 ---
 
@@ -75,6 +76,12 @@ python tools/validate_predictions.py q2 predictions_q2.csv
 jupyter notebook solution.ipynb
 # or run headlessly:
 jupyter nbconvert --to notebook --execute solution.ipynb --output solution_executed.ipynb
+```
+
+### 5. Launch Interactive Visualizer (Bonus Feature):
+```bash
+python interactive_dashboard/run_dashboard.py
+# Or directly double-click interactive_dashboard/index.html to open in any web browser
 ```
 
 ---
