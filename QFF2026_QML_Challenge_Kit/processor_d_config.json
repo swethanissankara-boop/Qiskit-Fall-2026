@@ -1,0 +1,87 @@
+{
+  "processor_id": "qml_q2_hexaring_6q_v1",
+  "n_qubits": 6,
+  "coupling_map": [
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      2,
+      0
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      4,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      4
+    ],
+    [
+      5,
+      0
+    ],
+    [
+      0,
+      5
+    ]
+  ],
+  "native_gate_set": [
+    "rx",
+    "ry",
+    "rz",
+    "cx"
+  ],
+  "qubit_layout": "custom",
+  "noise_assumptions": {
+    "single_qubit_error_rate": 0.001,
+    "two_qubit_error_rate": 0.01,
+    "readout_error_rate": 0.015,
+    "t1_us": 120.0,
+    "t2_us": 90.0,
+    "notes": "Superconducting transmon processor with fixed-frequency transmon qubits and cross-resonance CX gates."
+  },
+  "design_rationale": "6-qubit architecture featuring a triangular 3-qubit core (0, 1, 2) that provides full all-to-all connectivity with zero SWAP overhead for 3-qubit algorithms like QFT-3, coupled to an outer ring (3, 4, 5) tailored for the 6-qubit nearest-neighbour entangling ZZ-FeatureMap utilized in PS-Q2.",
+  "benchmark_results": {
+    "qft3_circuit_depth_before_transpile": 6,
+    "qft3_circuit_depth_after_transpile": 18,
+    "qft3_two_qubit_gate_count": 9,
+    "qft3_swap_overhead": 0,
+    "qft3_fidelity_ideal": 1.0,
+    "qft3_fidelity_noisy": 0.668377,
+    "benchmark_noise_model_version": "QFF2026-v2"
+  }
+}

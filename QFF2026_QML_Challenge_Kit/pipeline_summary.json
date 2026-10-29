@@ -1,0 +1,89 @@
+{
+  "task_a": {
+    "shots": 8192,
+    "noise_model_version": "QFF2026-v2",
+    "ideal": {
+      "XX": 1.0,
+      "XX_se": 0.0,
+      "YY": -1.0,
+      "YY_se": 0.0,
+      "ZZ": 1.0,
+      "ZZ_se": 0.0,
+      "fidelity": 1.0,
+      "fidelity_se": 0.0
+    },
+    "noisy": {
+      "XX": 0.819091796875,
+      "XX_se": 0.006338134717392098,
+      "YY": -0.827880859375,
+      "YY_se": 0.0061971720755083825,
+      "ZZ": 0.87353515625,
+      "ZZ_se": 0.005378000738451436,
+      "fidelity": 0.880126953125,
+      "fidelity_se": 0.0025920525815950387
+    }
+  },
+  "task_b": {
+    "qft3_circuit_depth_before_transpile": 6,
+    "qft3_circuit_depth_after_transpile": 18,
+    "qft3_two_qubit_gate_count": 9,
+    "qft3_swap_overhead": 0,
+    "qft3_fidelity_ideal": 1.0,
+    "qft3_fidelity_noisy": 0.668377,
+    "benchmark_noise_model_version": "QFF2026-v2"
+  },
+  "classical_results": {
+    "Linear SVM (50D)": {
+      "balanced_acc": 0.7075107378663065,
+      "balanced_acc_std": 0.029490486678142906,
+      "macro_f1": 0.7068768475107785,
+      "macro_f1_std": 0.029191394530683774
+    },
+    "RBF SVM (50D, C=1.0)": {
+      "balanced_acc": 0.7154416158824034,
+      "balanced_acc_std": 0.028178117422055043,
+      "macro_f1": 0.7154268825296785,
+      "macro_f1_std": 0.02820291434188259
+    },
+    "Poly SVM d=3 (50D)": {
+      "balanced_acc": 0.6959465502662681,
+      "balanced_acc_std": 0.010146776519495412,
+      "macro_f1": 0.6958889073376489,
+      "macro_f1_std": 0.010406868678428908
+    },
+    "Random Forest (50D)": {
+      "balanced_acc": 0.6787319449088477,
+      "balanced_acc_std": 0.033840639086778763,
+      "macro_f1": 0.6785275948256959,
+      "macro_f1_std": 0.03393050679605291
+    },
+    "RBF SVM (PCA 6D, C=1.0)": {
+      "balanced_acc": 0.7158230152646844,
+      "balanced_acc_std": 0.02704751218796734,
+      "macro_f1": 0.7156728605627651,
+      "macro_f1_std": 0.02702485194639755
+    },
+    "Linear SVM (PCA 6D)": {
+      "balanced_acc": 0.7145058536330944,
+      "balanced_acc_std": 0.021335736862492453,
+      "macro_f1": 0.7144749075862401,
+      "macro_f1_std": 0.02142762953074582
+    }
+  },
+  "quantum_ideal": {
+    "balanced_acc": 0.717465094411906,
+    "balanced_acc_std": 0.021661638428108254,
+    "macro_f1": 0.7176835420621668,
+    "macro_f1_std": 0.021754464026264655
+  },
+  "quantum_noisy_subset": {
+    "n_sub": 60,
+    "frob_dist": 11.540168677633623,
+    "ideal_diag_mean": 0.9999999999999983,
+    "noisy_diag_mean": 0.87890625,
+    "ideal_offdiag_mean": 0.21795315810751467,
+    "noisy_offdiag_mean": 0.0842530676200565,
+    "acc_ideal_sub": 0.6499999999999999,
+    "acc_noisy_sub": 0.6499999999999999
+  }
+}
