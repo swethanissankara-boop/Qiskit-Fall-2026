@@ -1,6 +1,6 @@
 # QFF 2026 Phase 2 — QML Track Submission (PS-Q2)
 
-**Team Name:** QML Explorers  
+**Team Name:** The Resonancers 
 **Selected Track:** Quantum Machine Learning (Phase 2)  
 **Selected Problem Statement:** **PS-Q2 (High-Dimensional Quantum-Kernel Classification)**  
 **Benchmark Noise Model:** Organizer Model `QFF2026-v2`  
