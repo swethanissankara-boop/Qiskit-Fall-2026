@@ -1,6 +1,6 @@
 # QFF2026 QML Track — Results Report
 
-**Team name:** QML Explorers  
+**Team name:** The Resonancers 
 **Selected PS:** [ ] PS-Q1  [x] PS-Q2  [ ] PS-Q3  
 **Date:** 2026-10-30  
 **Dependency versions:**
