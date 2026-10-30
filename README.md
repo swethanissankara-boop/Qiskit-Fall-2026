@@ -93,12 +93,12 @@ python interactive_dashboard/run_dashboard.py
   - Noisy Fidelity (`QFF2026-v2`): \(F = 0.880127 \pm 0.002592\) (\(\langle XX \rangle = 0.8191\), \(\langle YY \rangle = -0.8279\), \(\langle ZZ \rangle = 0.8735\))
 - **Task B (Processor D - `qml_q2_hexaring_6q_v1`):**
   - Transpiled depth: 18, 2Q gates: 9, SWAP overhead: 0, Noisy fidelity: 0.668377 (beating 5Q linear baseline by +6.5%)
-- **PS-Q2 (Classical vs Quantum Kernel on 800-sample 50D Dataset):**
-  - Classical Linear SVM: Balanced Acc = \(0.7075 \pm 0.0295\)
-  - Classical RBF-SVM: Balanced Acc = \(0.7154 \pm 0.0282\)
-  - Classical RBF-SVM (PCA 6D): Balanced Acc = \(0.7158 \pm 0.0270\)
-  - **Quantum Kernel Classifier (6Q ZZ-FeatureMap, Ideal): Balanced Acc = \(0.7175 \pm 0.0217\)**
-  - Quantum Kernel Classifier (Noisy Benchmark): \(0.6500\) (evaluated on benchmark subset under 1024-shot sampling)
+- **PS-Q2 (Classical vs Quantum Kernel on Training Set, 5-Fold Stratified CV):**
+  - Classical Linear SVM (50D raw): Balanced Acc = \(0.7075 \pm 0.0295\)
+  - Classical RBF-SVM (50D raw): Balanced Acc = \(0.7154 \pm 0.0282\)
+  - Classical RBF-SVM (PCA 6D): Balanced Acc = \(0.7158 \pm 0.0270\) (95% CI: [0.6823, 0.7493])
+  - **Quantum Kernel Classifier (6Q ZZ-FeatureMap, Ideal): Balanced Acc = \(0.7175 \pm 0.0217\)** (95% CI: [0.6905, 0.7445], paired t-test \(p = 0.887\) confirming statistical parity with RBF-SVM)
+  - Quantum Kernel Classifier (Noisy Benchmark QFF2026-v2): \(0.6000\) (evaluated on 80-sample stratified validation split under 1024-shot sampling; shows -0.1000 noise degradation)
 
 ---
 
